@@ -18,7 +18,7 @@ export default function AboutCard() {
       </header>
       <p className="text-[15px] leading-6 text-slate-700 dark:text-white/80">
         Merhaba, ben <strong>Ali Girişen</strong>. Ürün odaklı <em>full‑stack</em> geliştiriciyim. Modern
-        arayüzler, performanslı backend'ler ve ölçeklenebilir altyapılar üzerinde çalışıyorum.
+        arayüzler, performanslı backend&apos;ler ve ölçeklenebilir altyapılar üzerinde çalışıyorum.
       </p>
 
       <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[14px] text-slate-700/90 dark:text-white/70">

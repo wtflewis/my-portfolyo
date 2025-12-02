@@ -55,7 +55,7 @@ const isPlaying = data?.isPlaying ?? false;
                             target="_blank"
                         >
                          
-                         Spotify'da aç
+                         Spotify&apos;da aç
                             
                         </Link>
 

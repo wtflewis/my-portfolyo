@@ -107,7 +107,7 @@ export const getSearchSong = async () => {
 };
 
 
-export default async (_, res) => {
+const handler = async (_, res) => {
     const response = await getNowPlaying();
     const device_response = await getDevice();
     const search_response = await getSearchSong();
@@ -169,3 +169,5 @@ const lastPlayedTrack = lastPlayed.items && lastPlayed.items.length > 0 ? lastPl
      
     });
 };
+
+export default handler;
