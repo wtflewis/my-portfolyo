@@ -108,66 +108,47 @@ export const getSearchSong = async () => {
 
 
 const handler = async (_, res) => {
-    const response = await getNowPlaying();
-    const device_response = await getDevice();
-    const search_response = await getSearchSong();
-    const youtube_response = await getYoutube();
-    const user_response = await getUser();
-    const lastPlayedData = await getRecentlyPlayed();
-    const lastPlayed = await lastPlayedData.json();
-const lastPlayedTrack = lastPlayed.items && lastPlayed.items.length > 0 ? lastPlayed.items[0].track : null;
-// availableMarkets satırı kaldırıldı
+    try {
+        const response = await getNowPlaying();
 
-    if (response.status === 204 || response.status > 400) {
-        return res.status(200).json({ isPlaying: false, lastPlayed: lastPlayedTrack, lastSongImage: lastPlayedTrack ? lastPlayedTrack.album.images[0].url : null });
+        if (response.status === 204 || response.status > 400) {
+            const lastPlayedData = await getRecentlyPlayed();
+            const lastPlayed = await lastPlayedData.json();
+            const lastPlayedTrack = lastPlayed.items && lastPlayed.items.length > 0 ? lastPlayed.items[0].track : null;
+            return res.status(200).json({ 
+                isPlaying: false, 
+                lastPlayed: lastPlayedTrack, 
+                lastSongImage: lastPlayedTrack ? lastPlayedTrack.album.images[0].url : null 
+            });
+        }
+
+        const song = await response.json();
+        const device_response = await getDevice();
+        const user_response = await getUser();
+        const device_sort = await device_response.json();
+        const user_sort = await user_response.json();
+
+        const isPlaying = song.is_playing;
+        const title = song.item.name;
+        const artist = song.item.artists.map((_artist) => _artist.name).join(', ');
+        const album = song.item.album.name;
+        const albumImageUrl = song.item.album.images[0].url;
+        const songUrl = song.item.external_urls.spotify;
+        const deviceName = device_sort.devices[0] ? device_sort.devices[0].name : "Bilinmiyor";
+
+        return res.status(200).json({
+            album,
+            albumImageUrl,
+            artist,
+            isPlaying,
+            songUrl,
+            title,
+            deviceName,
+        });
+    } catch (error) {
+        console.error('Spotify API Error:', error);
+        return res.status(500).json({ isPlaying: false, error: 'Spotify API error' });
     }
-
-  
-
-
-    const song = await response.json();
-    const device_sort = await device_response.json();
-    const search_sort = await search_response.json();
-    const youtube_sort = await youtube_response.json();
-    const user_sort = await user_response.json();
-
-     
-    const isPlaying = song.is_playing;
-     
-    
-
-    const title = song.item.name;
-    const artist = song.item.artists.map((_artist) => _artist.name).join(', ');
-    const album = song.item.album.name;
-    const albumImageUrl = song.item.album.images[0].url;
-    const songUrl = song.item.external_urls.spotify;
-    const deviceName = device_sort.devices[0] ? device_sort.devices[0].name : "Bilinmiyor";
-    const deviceType = device_sort.devices[0] ? device_sort.devices[0].type : "Smartphone";
-    const deviceTypeTR = deviceType.replace("Computer", "Bilgisayar").replace("Smartphone", "Akıllı Telefon").replace("Tablet", "Tablet").replace("Speaker", "Hoparlör").replace("TV", "Televizyon").replace("AVR", "AVR").replace("STB", "STB").replace("AudioDongle", "AudioDongle").replace("GameConsole", "Oyun Konsolu").replace("CastVideo", "CastVideo").replace("CastAudio", "CastAudio").replace("Automobile", "Otomobil").replace("Unknown", "Bilinmiyor");
-    const prewiwUrl = song.item.preview_url;
-    const uri = song.item.uri;
-    const pro = user_sort.product;
-    const { access_token } = await getAccessToken();
-
-    return res.status(200).json({
-        album,
-        albumImageUrl,
-    
-        artist,
-        isPlaying,
-        songUrl,
-        title,
-        deviceName,
-        deviceType,
-        deviceTypeTR,
-        prewiwUrl,
-        uri,
-        pro,
-        youtube_sort,
-        bruh: access_token,
-        device_sort,
-     
-    });
 };
 
 export default handler;
