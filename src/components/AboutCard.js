@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Code2, Sparkles, Briefcase, ExternalLink, Folder, Star, GitFork } from "lucide-react";
+import { Code2, Sparkles, Database, Zap, ExternalLink, Folder, Star, GitFork } from "lucide-react";
 import Card from "@/components/ui/Card";
 import useSWR from "swr";
 
@@ -24,18 +24,18 @@ export default function AboutCard() {
       <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[14px] text-slate-700/90 dark:text-white/70">
         <li className="inline-flex items-center gap-2">
           <Code2 size={16} className="text-sky-600 dark:text-sky-300" />
-          React / Next.js, Tailwind, TypeScript
+          React / Next.js, TypeScript
         </li>
         <li className="inline-flex items-center gap-2">
           <Code2 size={16} className="text-sky-600 dark:text-sky-300" />
-          Node.js, Express, Prisma
+          Node.js, Express, REST APIs
         </li>
         <li className="inline-flex items-center gap-2">
-          <Briefcase size={16} className="text-sky-600 dark:text-sky-300" />
-          SaaS & Dashboard tasarımları
+          <Database size={16} className="text-sky-600 dark:text-sky-300" />
+          Firebase, Supabase, PostgreSQL
         </li>
         <li className="inline-flex items-center gap-2">
-          <Briefcase size={16} className="text-sky-600 dark:text-sky-300" />
+          <Zap size={16} className="text-sky-600 dark:text-sky-300" />
           API & Webhook entegrasyonları
         </li>
       </ul>
